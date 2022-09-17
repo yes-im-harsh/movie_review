@@ -1,10 +1,10 @@
 const express = require("express");
-const { createUser } = require("../controllers/user");
+const { create } = require("../controllers/user");
 
 const router = express.Router();
 
 //post request*, will be getting error of not Cannot GET /create-user
-router.post("/create-user", createUser);
+router.post("/create", create);
 
 module.exports = router;
 
