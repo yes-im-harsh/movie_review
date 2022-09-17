@@ -1,3 +1,5 @@
 exports.create = (req, res) => {
-  res.send("<h1>Create User</h1>");
+  //using postman send some data in json format in body->raw section.
+  console.log(req.body);
+  res.send({ user: req.body });
 };
