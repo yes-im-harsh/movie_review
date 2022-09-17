@@ -4,5 +4,3 @@ mongoose
   .connect("mongodb://localhost:27017/review_app")
   .then(() => console.log("db is connected"))
   .catch((ex) => console.log("db connection failed", ex));
-
-  //* Throwing Error, put the write connection URL, Install Mongodb locally.
