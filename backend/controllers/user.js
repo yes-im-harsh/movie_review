@@ -1,5 +1,10 @@
-exports.create = (req, res) => {
-  //using postman send some data in json format in body->raw section.
-  console.log(req.body);
-  res.send({ user: req.body });
+const User = require("../models/user");
+
+exports.create = async (req, res) => {
+  const { name, email, password } = req.body;
+
+  const newUser = new User({ name, email, password });
+  await newUser.save();
+
+  res.json({ user: newUser });
 };
