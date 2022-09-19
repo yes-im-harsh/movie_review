@@ -22,6 +22,11 @@ const emailVerificationTokenSchema = mongoose.Schema({
     expires: 3600,
     default: Date.now(),
   },
+  isVerified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 emailVerificationTokenSchema.pre("Save", async function (next) {
