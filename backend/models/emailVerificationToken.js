@@ -22,14 +22,10 @@ const emailVerificationTokenSchema = mongoose.Schema({
     expires: 3600,
     default: Date.now(),
   },
-  isVerified: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
+  
 });
 
-emailVerificationTokenSchema.pre("Save", async function (next) {
+emailVerificationTokenSchema.pre("save", async function (next) {
   if (this.isModified("token")) {
     const encryptedToken = await bcrypt.hash(this.token, 10);
     this.token = encryptedToken;
@@ -37,6 +33,12 @@ emailVerificationTokenSchema.pre("Save", async function (next) {
 
   next();
 });
+
+//For Comparing OTP
+emailVerificationTokenSchema.methods.compareToken = async function (token) {
+  const result = await bcrypt.compare(token, this.token);
+  return result;
+};
 
 module.exports = mongoose.model(
   "EmailVerificationToken",
