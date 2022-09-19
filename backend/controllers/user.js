@@ -11,5 +11,6 @@ exports.create = async (req, res) => {
   const newUser = new User({ name, email, password });
   await newUser.save();
 
+
   res.status(201).json({ user: newUser });
 };
