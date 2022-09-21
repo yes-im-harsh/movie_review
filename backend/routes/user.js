@@ -6,17 +6,20 @@ const {
   forgetPassword,
   sendResetPasswordTokenStatus,
   resetPassword,
+  signIn,
 } = require("../controllers/user");
 const { isValidPasswordResetToken } = require("../middlewares/user");
 const {
   userValidator,
   validate,
   validatePassword,
+  signInValidator,
 } = require("../middlewares/validator");
 
 const router = express.Router();
 
 router.post("/create", userValidator, validate, create);
+router.post("/sign-in", signIn, signInValidator, validate);
 //Creating route for verifying email.
 router.post("/verify-email", verifyEmail);
 //Creating route for re-verifying email.

@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const EmailVerificationToken = require("../models/emailVerificationToken");
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { isValidObjectId } = require("mongoose");
 const { generateOTP, generateMailTransporter } = require("../utils/mail");
@@ -200,4 +201,21 @@ exports.resetPassword = async (req, res) => {
   res.json({
     message: "Password reset successfully, now you can use new password.",
   });
+};
+
+//SignIn
+exports.signIn = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) return sendError(res, "Email/Password mismatched");
+
+  const matched = await user.comparePassword(password);
+  if (!matched) return sendError(res, "Email/Password mismatched");
+
+  const { _id, name} = user;
+
+  const jwtToken = jwt.sign({ userId: _id }, process.env.SECRET_KEY);
+
+  res.json({ user: { _id, name, email, token: jwtToken } });
 };
