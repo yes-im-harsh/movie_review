@@ -213,7 +213,7 @@ exports.signIn = async (req, res) => {
   const matched = await user.comparePassword(password);
   if (!matched) return sendError(res, "Email/Password mismatched");
 
-  const { _id, name} = user;
+  const { _id, name } = user;
 
   const jwtToken = jwt.sign({ userId: _id }, process.env.SECRET_KEY);
 

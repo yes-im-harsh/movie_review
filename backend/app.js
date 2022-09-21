@@ -1,6 +1,10 @@
 const express = require("express");
 //Optional* Package "morgan" for seeing the endpoints, statuscode etc. in the terminal.
 const morgan = require("morgan");
+const { errorHandler } = require("./middlewares/error");
+//With this package, you don't have to write try catch in every async function call inside controller or anywhere, just specify it here using app.use()
+require("express-async-errors");
+
 require("./db");
 const userRouter = require("./routes/user");
 
@@ -10,25 +14,8 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use("/api/user", userRouter);
 
-// app.get("/about", (req, res) => {
-//   res.send("<h1>Hello I am from the backend /about :) </h1>");
-// });
-
-//Middleware
-// app.post("/", middleware () => {}, (req,res)=> {})
-
-// app.post(
-//   "/sign-in",
-//   (req, res, next) => {
-//     const { email, password } = req.body;
-//     if (!email || !password)
-//       return res.json({ error: "email/password missing :(" });
-//     next();
-//   },
-//   (req, res) => {
-//     res.send("<h1>Hello I am Sign-in</h1>");
-//   }
-// );
+//Using express-async-errors
+app.use(errorHandler);
 
 app.listen(8000, () => {
   console.log("The port is listing on 8000");
