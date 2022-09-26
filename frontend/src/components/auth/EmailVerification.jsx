@@ -12,10 +12,31 @@ const EmailVerification = () => {
 
   const inputRef = useRef();
 
+  const focusNextInputFiled = (index) => {
+    setActiveOTPIndex(index + 1);
+  };
+
+  //prev
+  const focusPrevInputFiled = (index) => {
+    let nextIndex;
+    const diff = index - 1;
+    nextIndex = diff !== 0 ? diff : 0;
+
+    setActiveOTPIndex(nextIndex);
+  };
+
   const handleOTPChange = ({ target }, index) => {
     const { value } = target;
-    // setOtp([value]);
-    setActiveOTPIndex(index + 1);
+
+    // Logic for Updating OTP State. Now its automatically switching between fields.
+    const newOTP = [...otp];
+    newOTP[index] = value.substring(value.length - 1, value.length);
+
+    //Code for using, backspace to clear the state accordingly
+    if (!value) focusPrevInputFiled(index);
+    else focusNextInputFiled(index);
+
+    setOtp([...newOTP]);
   };
 
   useEffect(() => {
