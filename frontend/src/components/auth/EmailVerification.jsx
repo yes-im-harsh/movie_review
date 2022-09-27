@@ -5,6 +5,7 @@ import Submit from "../form/Submit";
 import Title from "../form/Title";
 
 const OPT_Length = 6;
+let currentOTPIndex;
 
 const EmailVerification = () => {
   const [otp, setOtp] = useState(new Array(OPT_Length).fill(""));
@@ -25,18 +26,25 @@ const EmailVerification = () => {
     setActiveOTPIndex(nextIndex);
   };
 
-  const handleOTPChange = ({ target }, index) => {
+  const handleOTPChange = ({ target }) => {
     const { value } = target;
 
     // Logic for Updating OTP State. Now its automatically switching between fields.
     const newOTP = [...otp];
-    newOTP[index] = value.substring(value.length - 1, value.length);
+    newOTP[currentOTPIndex] = value.substring(value.length - 1, value.length);
 
     //Code for using, backspace to clear the state accordingly
-    if (!value) focusPrevInputFiled(index);
-    else focusNextInputFiled(index);
+    if (!value) focusPrevInputFiled(currentOTPIndex);
+    else focusNextInputFiled(currentOTPIndex);
 
     setOtp([...newOTP]);
+  };
+
+  const handleKeyDown = ({ key }, index) => {
+    currentOTPIndex = index;
+    if (key === "Backspace") {
+      focusPrevInputFiled(index);
+    }
   };
 
   useEffect(() => {
@@ -62,7 +70,8 @@ const EmailVerification = () => {
                   type="number"
                   ref={activeOTPIndex === index ? inputRef : null}
                   value={otp[index] || ""}
-                  onChange={(e) => handleOTPChange(e, index)}
+                  onChange={handleOTPChange}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
                   className="w-12 h-12 border-2 border-dark-subtle focus:border-white rounded bg-transparent outline-none text-center text-white font-semibold text-xl spin-button-none"
                 />
               );
