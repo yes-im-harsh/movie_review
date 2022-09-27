@@ -10,7 +10,7 @@ const ForgetPassword = () => {
     <div className="fixed inset-0 bg-primary -z-20 flex justify-center items-center">
       <Container>
         <form className="bg-secondary rounded p-6 space-y-6 w-96">
-          <Title>Forget Password</Title>
+          <Title>Please Enter Your Email</Title>
           <FormInput label="Email" placeholder="jhon@gmail.com" name="email" />
 
           <Submit value="Send Link" />
