@@ -4,8 +4,17 @@ import FormInput from "../form/FormInput";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
 import CustomLink from "../CustomLink";
+// import { useContext } from "react";
+// import { ThemeContext } from "../../context/themeProvider";
+import { useTheme } from "../../hooks";
 
 const SignIn = () => {
+  // const theme = useContext(ThemeContext);
+  // console.log(theme.method());
+
+  const theme = useTheme();
+  theme.method();
+
   return (
     <div className="fixed inset-0 bg-primary -z-20 flex justify-center items-center">
       <Container>
