@@ -1,15 +1,17 @@
 import React from "react";
+import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import CustomLink from "../CustomLink";
+import FormContainer from "../form/FormContainer";
 import FormInput from "../form/FormInput";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
 
 const ForgetPassword = () => {
   return (
-    <div className="fixed inset-0 bg-primary -z-20 flex justify-center items-center">
+    <FormContainer>
       <Container>
-        <form className="bg-secondary rounded p-6 space-y-6 w-96">
+        <form className={commonModalClasses + " w-96"}>
           <Title>Please Enter Your Email</Title>
           <FormInput label="Email" placeholder="jhon@gmail.com" name="email" />
 
@@ -21,7 +23,7 @@ const ForgetPassword = () => {
           </div>
         </form>
       </Container>
-    </div>
+    </FormContainer>
   );
 };
 

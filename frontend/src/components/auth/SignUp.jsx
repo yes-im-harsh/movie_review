@@ -1,15 +1,17 @@
 import React from "react";
+import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import CustomLink from "../CustomLink";
+import FormContainer from "../form/FormContainer";
 import FormInput from "../form/FormInput";
 import Submit from "../form/Submit";
 import Title from "../form/Title";
 
 const SignUp = () => {
   return (
-    <div className="fixed inset-0 bg-primary -z-20 flex justify-center items-center">
+    <FormContainer>
       <Container>
-        <form className="bg-secondary rounded p-6 space-y-6 w-72">
+        <form className={commonModalClasses + " w-72"}>
           <Title>Sign Up</Title>
           <FormInput label="Name" placeholder="John Doe" name="name" />
           <FormInput label="Email" placeholder="jhon@gmail.com" name="email" />
@@ -25,7 +27,7 @@ const SignUp = () => {
           </div>
         </form>
       </Container>
-    </div>
+    </FormContainer>
   );
 };
 

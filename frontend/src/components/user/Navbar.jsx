@@ -20,7 +20,7 @@ const Navbar = () => {
               <button className="bg-dark-subtle p-1 rounded">
                 <BsFillSunFill
                   onClick={toggleTheme}
-                  className="text-secondary"
+                  className="dark:text-white text-secondary"
                   size={24}
                 />
               </button>
