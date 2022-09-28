@@ -7,19 +7,22 @@ const darkTheme = "dark";
 
 export default function ThemeProvider({ children }) {
   const toggleTheme = () => {
-    let oldTheme = localStorage.getItem("theme");
+    let oldTheme = getTheme();
     let newTheme = oldTheme === defaultTheme ? darkTheme : defaultTheme;
 
-    document.documentElement.classList.remove(oldTheme);
-    document.documentElement.classList.add(newTheme);
+    // document.documentElement.classList.remove(oldTheme);
+    // document.documentElement.classList.add(newTheme);
+
+    //Refactor Code
+    updateTheme(newTheme, oldTheme);
 
     localStorage.setItem("theme", newTheme);
   };
 
   useEffect(() => {
-    let theme = localStorage.getItem("theme");
-    if (!theme) document.documentElement.classList.add(defaultTheme);
-    else document.documentElement.classList.add(theme);
+    let theme = getTheme();
+    if (!theme) updateTheme(defaultTheme);
+    else updateTheme(theme);
   }, []);
 
   return (
@@ -28,3 +31,13 @@ export default function ThemeProvider({ children }) {
     </ThemeContext.Provider>
   );
 }
+
+//Refactoring the Code
+const getTheme = () => localStorage.getItem("theme");
+
+const updateTheme = (theme, removeTheme) => {
+  document.documentElement.classList.remove(removeTheme);
+  document.documentElement.classList.add(theme);
+
+  localStorage.setItem("theme", theme);
+};

@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
 
-const Title = ({children}) => {
+export default function Title({ children }) {
   return (
-   <h1 className="text-xl font-semibold text-white text-center">
-   {children}
- </h1>
-  )
+    <h1 className="text-xl font-semibold dark:text-white text-secondary text-center">
+      {children}
+    </h1>
+  );
 }
-
-export default Title

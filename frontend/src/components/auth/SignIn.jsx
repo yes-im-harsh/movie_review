@@ -16,7 +16,7 @@ const SignIn = () => {
   console.log(toggleTheme);
 
   return (
-    <div className="fixed inset-0 dark:bg-primary -z-20 flex justify-center items-center">
+    <div className="fixed inset-0 dark:bg-primary bg-white -z-20 flex justify-center items-center">
       <Container>
         <form className="dark:bg-secondary bg-white drop-shadow-lg rounded p-6 space-y-6 w-72">
           <Title>Sign In</Title>
