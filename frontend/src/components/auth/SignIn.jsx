@@ -12,13 +12,13 @@ const SignIn = () => {
   // const theme = useContext(ThemeContext);
   // console.log(theme.method());
 
-  const theme = useTheme();
-  theme.method();
+  const { toggleTheme } = useTheme();
+  console.log(toggleTheme);
 
   return (
-    <div className="fixed inset-0 bg-primary -z-20 flex justify-center items-center">
+    <div className="fixed inset-0 dark:bg-primary -z-20 flex justify-center items-center">
       <Container>
-        <form className="bg-secondary rounded p-6 space-y-6 w-72">
+        <form className="dark:bg-secondary bg-white drop-shadow-lg rounded p-6 space-y-6 w-72">
           <Title>Sign In</Title>
           <FormInput label="Email" placeholder="jhon@gmail.com" name="email" />
           <FormInput

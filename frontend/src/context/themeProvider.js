@@ -1,13 +1,20 @@
-import React, { createContext } from "react";
+import React, { createContext, useEffect } from "react";
 
 export const ThemeContext = createContext();
 
 export default function ThemeProvider({ children }) {
-  const method = () => {
-    console.log("form theme provider");
+  const toggleTheme = () => {
+    document.documentElement.classList.add("dark");
+    localStorage.setItem("theme", "dark");
   };
+
+  useEffect(() => {
+    let theme = localStorage.getItem("theme");
+    document.documentElement.classList.add(theme);
+  }, []);
+
   return (
-    <ThemeContext.Provider value={{ theme: "just for testing", method }}>
+    <ThemeContext.Provider value={{ toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
