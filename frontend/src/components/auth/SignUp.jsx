@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import createUser from "../../api/auth";
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
@@ -32,6 +33,8 @@ const SignUp = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const { name, email, password } = userInfo;
 
   const handleChange = ({ target }) => {
@@ -48,7 +51,11 @@ const SignUp = () => {
 
     const response = await createUser(userInfo);
     if (response.error) return console.log(response.error);
-    console.log(response.user);
+
+    navigate("/auth/verification", {
+      state: { user: response.user },
+      replace: true,
+    });
   };
 
   return (
