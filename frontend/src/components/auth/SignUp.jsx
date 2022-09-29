@@ -48,7 +48,7 @@ const SignUp = () => {
 
     const response = await createUser(userInfo);
     if (response.error) return console.log(response.error);
-    console.log(response.data);
+    console.log(response.user);
   };
 
   return (
