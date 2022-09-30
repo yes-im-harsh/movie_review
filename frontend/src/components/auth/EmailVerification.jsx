@@ -10,6 +10,16 @@ import Title from "../form/Title";
 const OPT_Length = 6;
 let currentOTPIndex;
 
+const isValidOTP = (otp) => {
+  let valid = false;
+  for (let val of otp) {
+    valid = !isNaN(parseInt(val));
+    if (!valid) break;
+  }
+
+  return valid;
+};
+
 const EmailVerification = () => {
   const [otp, setOtp] = useState(new Array(OPT_Length).fill(""));
   const [activeOTPIndex, setActiveOTPIndex] = useState(0);
@@ -54,18 +64,25 @@ const EmailVerification = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!isValidOTP(otp)) return console.log("Invalid OTP");
+    console.log(otp);
+  };
+
   useEffect(() => {
     inputRef.current?.focus();
   }, [activeOTPIndex]);
 
-  useEffect(() => {
-    if (!user) navigate("/not-found");
-  }, [user]);
+  // useEffect(() => {
+  //   if (!user) navigate("/not-found");
+  // }, [user]);
 
   return (
     <FormContainer>
       <Container>
-        <form className={commonModalClasses}>
+        <form onSubmit={handleSubmit} className={commonModalClasses}>
           <div>
             <Title>Please enter the OTP to verify your account</Title>
             <p className="text-center dark:text-dark-subtle text-light-subtle">
@@ -91,7 +108,7 @@ const EmailVerification = () => {
             })}
           </div>
 
-          <Submit value="Send Link" />
+          <Submit value="Verify Account" />
         </form>
       </Container>
     </FormContainer>
