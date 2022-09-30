@@ -1,6 +1,6 @@
 import client from "./client";
 
-const createUser = async (userInfo) => {
+export const createUser = async (userInfo) => {
   try {
     const { data } = await client.post("/user/create", userInfo);
     return data;
@@ -14,7 +14,7 @@ const createUser = async (userInfo) => {
 
 export const verifyUserEmail = async (userInfo) => {
   try {
-    const data = await client.post("/user/verify-email");
+    const data = await client.post("/user/verify-email", userInfo);
     return data;
   } catch (error) {
     const { response } = error;
@@ -23,5 +23,3 @@ export const verifyUserEmail = async (userInfo) => {
     return { error: error.message || error };
   }
 };
-
-export default createUser;

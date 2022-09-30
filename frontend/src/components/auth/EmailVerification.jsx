@@ -1,6 +1,6 @@
-import { useRef } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { verifyUserEmail } from "../../api/auth";
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import FormContainer from "../form/FormContainer";
@@ -64,20 +64,30 @@ const EmailVerification = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!isValidOTP(otp)) return console.log("Invalid OTP");
-    console.log(otp);
+
+    //if you will not use join after the OTP, it will through an error undefined, because our otp is in array. So we need to convert it to a string
+    const { error, message } = await verifyUserEmail({
+      userId: user.id,
+      OTP: otp.join(""),
+    });
+
+    console.log(otp.join(""));
+    if (error) return console.log(error);
+
+    console.log(message);
   };
 
   useEffect(() => {
     inputRef.current?.focus();
   }, [activeOTPIndex]);
 
-  // useEffect(() => {
-  //   if (!user) navigate("/not-found");
-  // }, [user]);
+  useEffect(() => {
+    if (!user) navigate("/not-found");
+  }, [user]);
 
   return (
     <FormContainer>
