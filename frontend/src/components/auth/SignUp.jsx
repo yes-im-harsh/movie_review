@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUser } from "../../api/auth";
+import { useNotification } from "../../hooks";
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import CustomLink from "../CustomLink";
@@ -35,6 +36,8 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
+  const {updateNotification}= useNotification()
+
   const { name, email, password } = userInfo;
 
   const handleChange = ({ target }) => {
@@ -47,7 +50,7 @@ const SignUp = () => {
     // console.log(userInfo);
     const { ok, error } = validUserInfo(userInfo);
 
-    if (!ok) return console.log(error);
+    if (!ok) return updateNotification("error", error);
 
     const response = await createUser(userInfo);
     if (response.error) return console.log(response.error);

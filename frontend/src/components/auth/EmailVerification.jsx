@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { verifyUserEmail } from "../../api/auth";
+import { useNotification } from "../../hooks";
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import FormContainer from "../form/FormContainer";
@@ -29,6 +30,7 @@ const EmailVerification = () => {
   const user = state?.user;
 
   const navigate = useNavigate();
+  const {updateNotification} = useNotification()
 
   const focusNextInputFiled = (index) => {
     setActiveOTPIndex(index + 1);
@@ -75,10 +77,10 @@ const EmailVerification = () => {
       OTP: otp.join(""),
     });
 
-    console.log(otp.join(""));
-    if (error) return console.log(error);
+    // console.log(otp.join(""));
+    if (error) return updateNotification("error", error);
 
-    console.log(message);
+    updateNotification("success", message);
   };
 
   useEffect(() => {
