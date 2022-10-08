@@ -71,7 +71,6 @@ exports.verifyEmail = async (req, res) => {
   await user.save();
 
   await EmailVerificationToken.findByIdAndDelete(token._id);
-  res.json({ message: "Your Email is Verified." });
 
   //Sending Welcome Message
   var transport = generateMailTransporter();
@@ -83,6 +82,14 @@ exports.verifyEmail = async (req, res) => {
     html: `
     
     <h1>Welcome to our App. Thanks for choosing us :)</h1>`,
+  });
+
+  //Improving User Experience, Login user just after OTP verification, Not need to ask user to login again.
+  const jwtToken = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+
+  res.json({
+    user: { id: user._id, name: user.name, email: user.email, token: jwtToken },
+    message: "Your Email is Verified.",
   });
 };
 
