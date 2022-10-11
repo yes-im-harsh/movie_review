@@ -69,7 +69,7 @@ const EmailVerification = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isValidOTP(otp)) return console.log("Invalid OTP");
+    if (!isValidOTP(otp)) return updateNotification("error", "Invalid OTP");
 
     //if you will not use join after the OTP, it will through an error undefined, because our otp is in array. So we need to convert it to a string
     const { error, message } = await verifyUserEmail({
