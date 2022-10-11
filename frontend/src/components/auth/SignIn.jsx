@@ -22,7 +22,6 @@ const validUserInfo = ({ email, password }) => {
 };
 
 const SignIn = () => {
-
   const [userInfo, setUserInfo] = useState({
     name: "",
     email: "",
@@ -32,6 +31,7 @@ const SignIn = () => {
   const { updateNotification } = useNotification();
   const { handleLogin, authInfo } = useAuth();
   console.log(authInfo);
+  const { isPending } = authInfo;
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -68,7 +68,7 @@ const SignIn = () => {
             onChange={handleChange}
             type="password"
           />
-          <Submit value="Sign In" />
+          <Submit value="Sign In" busy={isPending} />
 
           <div className="flex justify-between">
             <CustomLink to="/auth/forget-password">Forget Password</CustomLink>
