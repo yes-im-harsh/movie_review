@@ -1,7 +1,7 @@
 import { useState, createContext } from "react";
 import { signInUser } from "../api/auth";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 const defaultInfo = {
   profile: null,
@@ -27,6 +27,8 @@ const AuthProvider = ({ children }) => {
       isPending: false,
       error: "",
     });
+
+    localStorage.setItem("auth-token", user.token);
   };
 
   //To-Do: handleLogout, isAuth
