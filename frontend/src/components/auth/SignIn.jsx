@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../Container";
 import FormInput from "../form/FormInput";
 import Submit from "../form/Submit";
@@ -7,6 +7,7 @@ import CustomLink from "../CustomLink";
 import { useAuth, useNotification } from "../../hooks";
 import { commonModalClasses } from "../../utils/theme";
 import FormContainer from "../form/FormContainer";
+import { useNavigate } from "react-router-dom";
 
 const validUserInfo = ({ email, password }) => {
   const isValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -30,9 +31,8 @@ const SignIn = () => {
 
   const { updateNotification } = useNotification();
   const { handleLogin, authInfo } = useAuth();
-  const { isPending } = authInfo;
-
-  console.log(authInfo);
+  const { isPending, isLoggedIn } = authInfo;
+  const navigate = useNavigate();
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -41,13 +41,16 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(userInfo);
     const { ok, error } = validUserInfo(userInfo);
 
     if (!ok) return updateNotification("error", error);
 
     handleLogin(userInfo.email, userInfo.password);
   };
+
+  useEffect(() => {
+    if (isLoggedIn) navigate("/");
+  }, [isLoggedIn]);
 
   return (
     <FormContainer>

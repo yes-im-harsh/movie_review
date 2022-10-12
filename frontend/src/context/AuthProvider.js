@@ -50,14 +50,19 @@ const AuthProvider = ({ children }) => {
     });
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("auth-token");
+    setAuthInfo({ ...defaultInfo });
+  };
+
   useEffect(() => {
     isAuth();
   }, []);
 
-  //To-Do: handleLogout
-
   return (
-    <AuthContext.Provider value={{ authInfo, handleLogin, isAuth }}>
+    <AuthContext.Provider
+      value={{ authInfo, handleLogin, isAuth, handleLogout }}
+    >
       {children}
     </AuthContext.Provider>
   );
