@@ -1,5 +1,5 @@
-import { useState, createContext } from "react";
-import { signInUser } from "../api/auth";
+import { useState, createContext, useEffect } from "react";
+import { getIsAuth, signInUser } from "../api/auth";
 
 export const AuthContext = createContext();
 
@@ -34,12 +34,30 @@ const AuthProvider = ({ children }) => {
   const isAuth = () => {
     const token = localStorage.getItem("auth-token");
     if (!token) return;
+
+    setAuthInfo({ ...authInfo, isPending: true });
+
+    const { user, error } = getIsAuth(token);
+    if (error) {
+      return setAuthInfo({ ...authInfo, isPending: false, error });
+    }
+
+    setAuthInfo({
+      profile: { ...user },
+      isLoggedIn: true,
+      isPending: false,
+      error: "",
+    });
   };
 
-  //To-Do: handleLogout, isAuth
+  useEffect(() => {
+    isAuth();
+  }, []);
+
+  //To-Do: handleLogout
 
   return (
-    <AuthContext.Provider value={{ authInfo, handleLogin }}>
+    <AuthContext.Provider value={{ authInfo, handleLogin, isAuth }}>
       {children}
     </AuthContext.Provider>
   );

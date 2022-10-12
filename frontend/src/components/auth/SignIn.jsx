@@ -30,8 +30,9 @@ const SignIn = () => {
 
   const { updateNotification } = useNotification();
   const { handleLogin, authInfo } = useAuth();
-  console.log(authInfo);
   const { isPending } = authInfo;
+
+  console.log(authInfo);
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
