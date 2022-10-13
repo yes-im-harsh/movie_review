@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { verifyUserEmail } from "../../api/auth";
-import { useNotification } from "../../hooks";
+import { useAuth, useNotification } from "../../hooks";
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import FormContainer from "../form/FormContainer";
@@ -28,9 +28,11 @@ const EmailVerification = () => {
   const inputRef = useRef();
   const { state } = useLocation();
   const user = state?.user;
+  const { isAuth, authInfo } = useAuth();
+  const { isLoggedIn } = authInfo;
 
   const navigate = useNavigate();
-  const {updateNotification} = useNotification()
+  const { updateNotification } = useNotification();
 
   const focusNextInputFiled = (index) => {
     setActiveOTPIndex(index + 1);
@@ -72,7 +74,11 @@ const EmailVerification = () => {
     if (!isValidOTP(otp)) return updateNotification("error", "Invalid OTP");
 
     //if you will not use join after the OTP, it will through an error undefined, because our otp is in array. So we need to convert it to a string
-    const { error, message } = await verifyUserEmail({
+    const {
+      error,
+      message,
+      user: userResponse,
+    } = await verifyUserEmail({
       userId: user.id,
       OTP: otp.join(""),
     });
@@ -81,6 +87,8 @@ const EmailVerification = () => {
     if (error) return updateNotification("error", error);
 
     updateNotification("success", message);
+    localStorage.setItem("auth-token", userResponse.token);
+    isAuth();
   };
 
   useEffect(() => {
@@ -89,7 +97,8 @@ const EmailVerification = () => {
 
   useEffect(() => {
     if (!user) navigate("/not-found");
-  }, [user]);
+    if (isLoggedIn) navigate("/");
+  }, [user, isLoggedIn]);
 
   return (
     <FormContainer>
