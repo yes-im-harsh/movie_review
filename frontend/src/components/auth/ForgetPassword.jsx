@@ -21,7 +21,7 @@ const ForgetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isValidEmail(email))
+    if (!isValidEmail(email))
       return updateNotification("error", "Invalid Email");
     const { error, message } = await forgetPassword(email);
     if (error) return updateNotification("error", error);
