@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { ImSpinner10 } from "react-icons/im";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { verifyPasswordResetToken } from "../../api/auth";
+import { useNotification } from "../../hooks";
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
 import FormContainer from "../form/FormContainer";
@@ -11,13 +13,31 @@ import Title from "../form/Title";
 
 const ConfirmPassword = () => {
   const [isVerifying, setIsVerifying] = useState(true);
+  const [isValid, setIsValid] = useState(false);
+
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const id = searchParams.get("id");
-  console.log(token, id);
-  // http://localhost:3000/auth/reset-password?token=6bab0f8391dbb7cf34dbfb58c347a3b2d7683c536cd5d640d39f67f3e948&id=6349959b1f099e97fafbd261
 
-  //To-do: isValid, !isValid
+  const { updateNotification } = useNotification();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    isValidToken();
+  }, []);
+
+  const isValidToken = async () => {
+    const { error, valid } = await verifyPasswordResetToken(token, id);
+    setIsVerifying(false);
+    if (error) return updateNotification("error", error);
+
+    if (!valid) {
+      setIsValid(false);
+      return navigate("/auth/reset-password", { replace: true });
+    }
+
+    setIsValid(true);
+  };
 
   if (isVerifying) {
     return (
@@ -29,6 +49,18 @@ const ConfirmPassword = () => {
             </h1>
             <ImSpinner10 className="animate-spin text-4xl dark:text-white text-primary" />
           </div>
+        </Container>
+      </FormContainer>
+    );
+  }
+
+  if (!isValid) {
+    return (
+      <FormContainer>
+        <Container>
+          <h1 className="text-4xl font-semibold dark:text-white text-primary">
+            Sorry, The token is invalid!
+          </h1>
         </Container>
       </FormContainer>
     );
