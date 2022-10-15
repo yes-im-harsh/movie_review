@@ -29,7 +29,9 @@ const EmailVerification = () => {
   const { state } = useLocation();
   const user = state?.user;
   const { isAuth, authInfo } = useAuth();
-  const { isLoggedIn } = authInfo;
+  const { isLoggedIn, profile } = authInfo;
+
+  const isVerified = profile?.isVerified;
 
   const navigate = useNavigate();
   const { updateNotification } = useNotification();
@@ -97,7 +99,7 @@ const EmailVerification = () => {
 
   useEffect(() => {
     if (!user) navigate("/not-found");
-    if (isLoggedIn) navigate("/");
+    if (isLoggedIn && isVerified) navigate("/");
   }, [user, isLoggedIn]);
 
   return (
