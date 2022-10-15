@@ -29,7 +29,10 @@ const ConfirmPassword = () => {
   const isValidToken = async () => {
     const { error, valid } = await verifyPasswordResetToken(token, id);
     setIsVerifying(false);
-    if (error) return updateNotification("error", error);
+    if (error) {
+      navigate("/auth/reset-password", { replace: true });
+      return updateNotification("error", error);
+    }
 
     if (!valid) {
       setIsValid(false);

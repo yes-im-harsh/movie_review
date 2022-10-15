@@ -55,7 +55,7 @@ export const getIsAuth = async (token) => {
 
 export const forgetPassword = async (email) => {
   try {
-    const { data } = await client.post("/user/forget-password", {email});
+    const { data } = await client.post("/user/forget-password", { email });
     return data;
   } catch (error) {
     const { response } = error;
@@ -67,7 +67,10 @@ export const forgetPassword = async (email) => {
 
 export const verifyPasswordResetToken = async (token, userId) => {
   try {
-    const { data } = await client.post("/user/verify-pass-reset-token", {token, userId});
+    const { data } = await client.post("/user/verify-password-reset-token", {
+      token,
+      userId,
+    });
     return data;
   } catch (error) {
     const { response } = error;
