@@ -1,18 +1,16 @@
-import React from 'react'
-import AuthProvider from './AuthProvider'
-import NotificationProvider from './NotificationProvider'
-import ThemeProvider from './themeProvider'
+import React from "react";
+import AuthProvider from "./AuthProvider";
+import NotificationProvider from "./NotificationProvider";
+import ThemeProvider from "./themeProvider";
 
-const ContextProviders = ({children}) => {
+const ContextProviders = ({ children }) => {
   return (
-    <AuthProvider>
-     <NotificationProvider>
-      <ThemeProvider>
-       {children}
-      </ThemeProvider>
-     </NotificationProvider>
-    </AuthProvider>
-  )
-}
+    <NotificationProvider>
+      <AuthProvider>
+        <ThemeProvider>{children}</ThemeProvider>
+      </AuthProvider>
+    </NotificationProvider>
+  );
+};
 
-export default ContextProviders
+export default ContextProviders;
