@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { verifyUserEmail } from "../../api/auth";
+import { resendEmailVerificationToken, verifyUserEmail } from "../../api/auth";
 import { useAuth, useNotification } from "../../hooks";
 import { commonModalClasses } from "../../utils/theme";
 import Container from "../Container";
@@ -26,15 +26,17 @@ const EmailVerification = () => {
   const [activeOTPIndex, setActiveOTPIndex] = useState(0);
 
   const inputRef = useRef();
-  const { state } = useLocation();
-  const user = state?.user;
+  const { updateNotification } = useNotification();
+
   const { isAuth, authInfo } = useAuth();
   const { isLoggedIn, profile } = authInfo;
-
   const isVerified = profile?.isVerified;
+  console.log(isVerified);
+
+  const { state } = useLocation();
+  const user = state?.user;
 
   const navigate = useNavigate();
-  const { updateNotification } = useNotification();
 
   const focusNextInputFiled = (index) => {
     setActiveOTPIndex(index + 1);
@@ -70,6 +72,14 @@ const EmailVerification = () => {
     }
   };
 
+  const handleOTPResend = async () => {
+    const { error, message } = await resendEmailVerificationToken(user.id);
+
+    if (error) return updateNotification("error", error);
+
+    updateNotification("success", message);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -81,8 +91,8 @@ const EmailVerification = () => {
       message,
       user: userResponse,
     } = await verifyUserEmail({
-      userId: user.id,
       OTP: otp.join(""),
+      userId: user.id,
     });
 
     // console.log(otp.join(""));
@@ -97,10 +107,12 @@ const EmailVerification = () => {
     inputRef.current?.focus();
   }, [activeOTPIndex]);
 
+  console.log(isVerified);
+
   useEffect(() => {
     if (!user) navigate("/not-found");
     if (isLoggedIn && isVerified) navigate("/");
-  }, [user, isLoggedIn]);
+  }, [user, isLoggedIn, isVerified]);
 
   return (
     <FormContainer>
@@ -131,7 +143,16 @@ const EmailVerification = () => {
             })}
           </div>
 
-          <Submit value="Verify Account" />
+          <div>
+            <Submit value="Verify Account" />
+            <button
+              onClick={handleOTPResend}
+              type="button"
+              className="dark:text-white text-blue-500 font-semibold hover:underline mt-2"
+            >
+              I don't have OTP
+            </button>
+          </div>
         </form>
       </Container>
     </FormContainer>

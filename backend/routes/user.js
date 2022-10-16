@@ -20,7 +20,7 @@ const { isAuth } = require("../middlewares/auth");
 const router = express.Router();
 
 router.post("/create", userValidator, validate, create);
-router.post("/sign-in", signIn, signInValidator, validate);
+router.post("/sign-in", signInValidator, validate, signIn);
 //Creating route for verifying email.
 router.post("/verify-email", verifyEmail);
 //Creating route for re-verifying email.
@@ -47,7 +47,7 @@ router.get("/is-auth", isAuth, (req, res) => {
       id: user._id,
       name: user.name,
       email: user.email,
-      isVerified: user.isVerified
+      isVerified: user.isVerified,
     },
   });
 });

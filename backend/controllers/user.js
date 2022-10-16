@@ -88,7 +88,13 @@ exports.verifyEmail = async (req, res) => {
   const jwtToken = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
 
   res.json({
-    user: { id: user._id, name: user.name, email: user.email, token: jwtToken, isVerified: user.isVerified},
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      token: jwtToken,
+      isVerified: user.isVerified,
+    },
     message: "Your Email is Verified.",
   });
 };
@@ -228,5 +234,7 @@ exports.signIn = async (req, res) => {
 
   const jwtToken = jwt.sign({ userId: _id }, process.env.SECRET_KEY);
 
-  res.json({ user: { _id, name, email, token: jwtToken, isVerified } });
+  res.json({
+    user: { id: _id, name, email, token: jwtToken, isVerified },
+  });
 };
